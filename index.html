@@ -6,6 +6,13 @@
       body {
         background-color: #FFFFFF;
       }
+      .title {
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12pt;
+        font-weight: bold;
+        padding-top: 10px;
+      }
       a {
         vertical-align: bottom;
         text-decoration: none;
@@ -43,6 +50,9 @@
         display: inline-block;
         height:35px;
       }
+      .videoInfo {
+        background-color: #FFDEAD;
+      }
       .thumbnailLinkAndImage {
         padding: 10px;
         text-align: center;
@@ -52,13 +62,29 @@
         margin-bottom: 10px;
         display: flex;
         justify-content: space-between;
-        background-color: #FFDEAD	;
       }
       #thumbnailsList {
         margin: 10px;
       }
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
+      function fetchVideoTitle(videoID) {
+        var url = "https://www.youtube.com/watch?v=" + videoID;
+        url = encodeURIComponent(url);
+        var videoTitle = "";
+        
+        $.ajax({
+          url: 'http://youtube.com/oembed?url=' + url + '&format=json',
+          async: false,
+          dataType: 'json',
+          success: function(result) {
+            videoTitle = result.title;
+          }
+        });
+        return videoTitle;
+      }
+
       function fetchThumbnails() {
         var videoID = document.getElementById("videoURLTxt").value;
         var thumbnailTypes = ["default", "mqdefault", "hqdefault", "sddefault", "hq720", "maxresdefault", "0", "1", "2", "3"];
@@ -81,7 +107,17 @@
           thumbnailLinkAndImage.appendChild(thumbnailLink);
           videoThumbnails.appendChild(thumbnailLinkAndImage);
         }
-        document.getElementById("thumbnailsList").appendChild(videoThumbnails);
+
+        var videoTitle = document.createElement("p");
+        videoTitle.className = "title";
+        videoTitle.innerHTML = fetchVideoTitle(videoID);
+
+        var videoInfo = document.createElement("div");
+        videoInfo.className = "videoInfo";
+        videoInfo.appendChild(videoTitle);
+        videoInfo.appendChild(videoThumbnails);
+        
+        document.getElementById("thumbnailsList").prepend(videoInfo);
       }
     </script>
   </head>
