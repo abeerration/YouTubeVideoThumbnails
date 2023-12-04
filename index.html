@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>YouTubeVideoThumbnails</title>
+    <style>
+      body {
+        background-color: #FFFFFF;
+      }
+      a {
+        vertical-align: bottom;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      img {
+        margin-top: 5px;
+        display: block;
+      }
+      #titleBanner {
+        margin: 10px;
+        padding: 10px;
+        background-color: #D22B2B;
+        color: #FFFFFF;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 20pt;
+        font-weight: bold;
+      }
+      #queryBox {
+        margin: 10px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18pt;
+        text-align: center;
+      }
+      #videoURLTxt {
+        line-height: 1.3;
+        font-size: 18pt;
+        font-weight: bold;
+        color: #D22B2B;
+      }
+      #fetchBtn {
+        vertical-align: bottom;
+        display: inline-block;
+        height:35px;
+      }
+      .thumbnailLinkAndImage {
+        padding: 10px;
+        text-align: center;
+      }
+      .videoThumbnails {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: space-between;
+        background-color: #FFDEAD	;
+      }
+      #thumbnailsList {
+        margin: 10px;
+      }
+    </style>
+    <script>
+      function fetchThumbnails() {
+        var videoID = document.getElementById("videoURLTxt").value;
+        var thumbnailTypes = ["default", "mqdefault", "hqdefault", "sddefault", "hq720", "maxresdefault", "0", "1", "2", "3"];
+
+        var videoThumbnails = document.createElement("div");
+        videoThumbnails.className = "videoThumbnails";
+
+        for (var i = 0; i < thumbnailTypes.length; i++) {
+          var thumbnailLink = document.createElement("a");
+          thumbnailLink.href = "http://i.ytimg.com/vi/" + videoID + "/" + thumbnailTypes[i] + ".jpg";
+          thumbnailLink.innerHTML = thumbnailTypes[i];
+          thumbnailLink.target="_blank";
+          var thumbnailPreview = document.createElement("img");
+          thumbnailPreview.src = "http://i.ytimg.com/vi/" + videoID + "/" + thumbnailTypes[i] + ".jpg";
+          thumbnailPreview.width = 100;
+
+          var thumbnailLinkAndImage = document.createElement("div");
+          thumbnailLinkAndImage.className = "thumbnailLinkAndImage";
+          thumbnailLink.appendChild(thumbnailPreview);
+          thumbnailLinkAndImage.appendChild(thumbnailLink);
+          videoThumbnails.appendChild(thumbnailLinkAndImage);
+        }
+        document.getElementById("thumbnailsList").appendChild(videoThumbnails);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="titleBanner">YouTubeVideoThumbnails</div>
+    <div id="queryBox">
+      <span>youtube.com/watch?v=</span>
+      <input id="videoURLTxt" type="text" value="tLHtbtbYS3M">
+      <button id="fetchBtn" onclick="fetchThumbnails();">Fetch Thumbnails</button>
+    </div>
+    <div id="thumbnailsList"></div>
+  </body>
+</html>
